@@ -39,7 +39,7 @@ public class WebPageImpl implements WebPage {
     public Set<String> getEmails() {
         if(emails == null) {
             emails = new HashSet<String>();
-            Matcher matcher = getEmailMatcher();
+            Matcher matcher = getEmailMatcher(doc);
             while(matcher.find()) {
                 emails.add(matcher.group());
             }
@@ -62,7 +62,7 @@ public class WebPageImpl implements WebPage {
         return doc;
     }
 
-    private Matcher getEmailMatcher() {
+    private Matcher getEmailMatcher(Document doc) {
         return Pattern
             .compile(WebPageImpl.EMAIL_PATTERN,
                      Pattern.CASE_INSENSITIVE)
