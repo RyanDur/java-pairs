@@ -6,8 +6,8 @@ import org.jsoup.select.Elements;
 import java.util.regex.*;
 
 public class WebPageImpl implements WebPage {
-    //    public static final String EMAIL_PATTERN = "^[a-zA-Z](?!.*\\s).{4,15}@[a-z]{3,10}[.][a-z]{2,5}";
-    public static final String EMAIL_PATTERN = "asdfgsdf@sfgsfb.com";
+    //public static final String EMAIL_PATTERN = "^[a-zA-Z](?!.*\\s).{4,15}@[a-z]{3,10}[.][a-z]{2,5}";
+    public static final String EMAIL_PATTERN = "[a-z]*\\.*[a-z]*\\.*[a-z]*@[a-z]*\\.[a-z]*";
     private String url;
     private Document doc;
 
