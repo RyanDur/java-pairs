@@ -9,6 +9,8 @@ public class WebPageImpl implements WebPage {
     public static final String EMAIL_PATTERN = "\\b[a-z_.]{1,}@[a-z.]*[a-z]{1,3}\\b";
     private String url;
     private Document doc;
+    private Set<String> emails;
+    private Set<String> links;
 
     public WebPageImpl(String url) {
         this.url = url;
@@ -21,24 +23,30 @@ public class WebPageImpl implements WebPage {
 
     @Override
     public Set<String> getLinks() {
-        doc = getDocument();
-        Set<String> links = new HashSet<String>();
-        Elements jLinks = doc.getElementsByAttribute("href");
-        for(Element link : jLinks) {
-            links.add(link.attr("href"));
+        if(links == null) {
+            doc = getDocument();
+            links = new HashSet<String>();
+            Elements jLinks = doc.getElementsByAttribute("href");
+            for(Element link : jLinks) {
+                links.add(link.attr("href"));
+            }
+	    links = Collections.unmodifiableSet(links);
         }
-        return Collections.unmodifiableSet(links);
+        return links;
     }
 
     @Override
     public Set<String> getEmails() {
-        doc = getDocument();
-        Set<String> emails = new HashSet<String>();
-        Matcher matcher = Pattern.compile(WebPageImpl.EMAIL_PATTERN).matcher(doc.toString());
-        while(matcher.find()) {
-            emails.add(matcher.group());
+        if(emails == null) {
+            emails = new HashSet<String>();
+            doc = getDocument();
+            Matcher matcher = Pattern.compile(WebPageImpl.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE).matcher(doc.toString());
+            while(matcher.find()) {
+                emails.add(matcher.group());
+            }
+	    emails = Collections.unmodifiableSet(emails);
         }
-        return Collections.unmodifiableSet(emails);
+        return emails;
     }
 
     @Override
