@@ -24,11 +24,11 @@ public class WebPageImpl implements WebPage {
     @Override
     public Set<String> getLinks() {
         if(links == null) {
-            doc = getDocument();
+	    String attr = "href";
             links = new HashSet<String>();
-            Elements jLinks = doc.getElementsByAttribute("href");
+            Elements jLinks = getDocument().getElementsByAttribute(attr);
             for(Element link : jLinks) {
-                links.add(link.attr("href"));
+                links.add(link.attr(attr));
             }
 	    links = Collections.unmodifiableSet(links);
         }
@@ -39,8 +39,7 @@ public class WebPageImpl implements WebPage {
     public Set<String> getEmails() {
         if(emails == null) {
             emails = new HashSet<String>();
-            doc = getDocument();
-            Matcher matcher = Pattern.compile(WebPageImpl.EMAIL_PATTERN, Pattern.CASE_INSENSITIVE).matcher(doc.toString());
+            Matcher matcher = getEmailMatcher();
             while(matcher.find()) {
                 emails.add(matcher.group());
             }
@@ -57,5 +56,12 @@ public class WebPageImpl implements WebPage {
             } catch(IOException e) {}
         }
         return doc;
+    }
+
+    private Matcher getEmailMatcher() {
+	return Pattern
+	    .compile(WebPageImpl.EMAIL_PATTERN,
+		     Pattern.CASE_INSENSITIVE)
+	    .matcher(getDocument().toString());
     }
 }
