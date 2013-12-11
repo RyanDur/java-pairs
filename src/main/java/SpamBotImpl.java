@@ -1,21 +1,46 @@
-public class SpamBotImpl{
+import java.util.*;
+import java.net.URL;
+import java.net.MalformedURLException;
+
+public class SpamBotImpl implements SpamBot{
+	private String seedUrl="";	
+	protected int threads; // needs to be private = get a getter;
+	private int numOfThreads;
+	
+	public int getNumOfThreads(){
+		return this.numOfThreads;
+	}
+	
 	@Override
-	public  setSeed(String seedUrl) throws MalformedUrlExpression{
-		try{ //seedUrl is a URL
+	public String getSeed(){
+		return this.seedUrl;
+	}
+	
+	@Override
+	public void setSeed(String seedUrl) {
+		try {
+			URL url = new URL(seedUrl);
+			this.seedUrl = seedUrl;
+		} catch (MalformedURLException e) {
+			this.seedUrl = "not a URL";
 		}
+	}
+	
+	@Override
+	public void setThreads(int count){
+		this.numOfThreads = count;
+	}
+	
+	@Override
+	public void scanSite(){
+		WebPage[] wpThreads = new WebPageImpl(numOfThreads);
+		Thread[] threadArray = new Thread(numOfThreads);
 		
-	}
-	@Override
-	public void setThreads(int count) throws unmanageableBySystem{
-		//setThreads(userInput){
-			//check max concurrent threads
-			//check max parallel threads
-			//try {
-			//if allowed : this.threads = count;
-			//}
-			 //else : throw threads unmanageableBySystem;
-			//}
+		for(WebPage wp : wpThreads){
+			wp = new WebPageImpl();
 		}
-	}
- 
+	}	
+	//@Override
+	//public Set<String> getEMails(){
+	//}
 }

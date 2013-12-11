@@ -1,16 +1,25 @@
+import static org.junit.Assert.*;
+
+import java.net.URL;
+import java.net.MalformedURLException;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 public class TestSpamBot{
-	SpamBotImpl sbr;
-	
-	@BeforeClass
-	public static beforeTest() throws Exception{
+	SpamBot sbr; 
+	String urlStr ="http://www.google.com"; //"something that isnt a URL" 
+	int numOfThreads = 8;
+	@Before
+	public void beforeTest(){
 		sbr = new SpamBotImpl();
+		sbr.setSeed(urlStr);
 	}
-	@AfterClass
-	public static afterTest() throws Exception{
+	@After
+	public void afterTest(){
 		sbr = null;
 	}
-	
-	
 	 /**
      * Sets the seed.
      *
@@ -21,23 +30,24 @@ public class TestSpamBot{
      *
      * @param seedUrl the first URL to fetch and analyse
      */
-	@test
+	@Test
     public void testSetSeed() {
-		sbr.setSeed("http://www.google.com");
-		if(  "setseed()"  throwsException){
-			assertEquals(sbr.seedUrl, null)
-		} else {
-		assertEquals(sbr.seedUrl, "http://www.google.com");
-		//throws MalformedURLException;
+		try {
+				URL url = new URL(urlStr);
+				assertEquals(sbr.getSeed(), urlStr);
+		} catch (MalformedURLException e) {
+				assertEquals(sbr.getSeed(), "not a URL");
 		}
+		
+		
 	}
 
     /**
      * Returns the seed URL. * @return the seed URL.
      */
-	@test
-    public String testGetSeed(){
-		assertEquals(sbr.getSeed(), "http://www.google.com")
+	@Test
+    public void testGetSeed(){
+		assertEquals(sbr.getSeed(), urlStr);
 	}
 
     /**
@@ -48,25 +58,20 @@ public class TestSpamBot{
      *
      * @param count the number of threads (i.e. crawlers) to start in parallel
      */
-	@test
+	@Test
     public void testSetThreads(){
-		sbr.setThreads(numThreads);
-		if(sbr.getThreads()=null){
-			assertEquals(calculate viability of limit threads available to false, 'unmanageableBySystemException' has been thrown);
-		} else {
-			assertEquals(sbr.getThreads(),  numThreads);
-		}
-		
+		sbr.setThreads(numOfThreads);
+		assertEquals(sbr.getNumOfThreads(), numOfThreads);
 	}
 
     /**
      * Initiates the scanning process.
      */
-	@test
+	@Test
     public void testScanSite(){
-		assertEquals(WebPageImpl is running);
-		assertEquals(.rtf has been created and propperly populated)
-		
+		//assertEquals(WebPageImpl is running);
+		//assertEquals(.rtf has been created and properly populated)
+		assertEquals(1,2);
 	}
 
     /**
@@ -76,9 +81,10 @@ public class TestSpamBot{
      * have stopped. If it is called before that point, its
      * behaviour is not defined.
      */
-	@test
+	@Test
     public void testGetEMails(){
-		Set<String>
-		assertEquals(get and populate array with each line on .rtf);
+		//Set<String>
+		//assertEquals(get and populate array with each line on .rtf);
+		assertEquals(1,2);
 	}
 }

@@ -2,7 +2,7 @@ import java.util.*;
 import java.net.MalformedURLException;
 
 public interface SpamBot {
-	protected int threads; // needs to be private = get a getter;
+
     /**
      * Sets the seed.
      *
@@ -13,12 +13,12 @@ public interface SpamBot {
      *
      * @param seedUrl the first URL to fetch and analyse
      */
-    void setSeed(String seedUrl) throws MalformedURLException{}
-
+    void setSeed(String seedUrl);
+	
     /**
      * Returns the seed URL. * @return the seed URL.
      */
-    String getSeed(){}
+    String getSeed();
 
     /**
      * Sets the number of threads.
@@ -28,7 +28,7 @@ public interface SpamBot {
      *
      * @param count the number of threads (i.e. crawlers) to start in parallel
      */
-    void setThreads(int count) throws unmanageableBySystem;
+    void setThreads(int count);
 		
     /**
      * Initiates the scanning process.
@@ -42,5 +42,7 @@ public interface SpamBot {
      * have stopped. If it is called before that point, its
      * behaviour is not defined.
      */
-    Set<String> getEMails();
+    //Set<String> getEMails();
+	//
+	int getNumOfThreads();
 }
