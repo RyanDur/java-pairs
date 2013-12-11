@@ -1,6 +1,7 @@
 import java.util.*;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.io.*;
 
 public class SpamBotImpl implements SpamBot{
 	private String seedUrl="";	
@@ -21,6 +22,7 @@ public class SpamBotImpl implements SpamBot{
 		try {
 			URL url = new URL(seedUrl);
 			this.seedUrl = seedUrl;
+			
 		} catch (MalformedURLException e) {
 			this.seedUrl = "not a URL";
 		}
@@ -33,15 +35,14 @@ public class SpamBotImpl implements SpamBot{
 	
 	@Override
 	public void scanSite(){
-		WebPage[] wpThreads = new WebPageImpl(numOfThreads);
-		Thread[] threadArray = new Thread(numOfThreads);
-		int i = 0;
-		for(WebPage wp : wpThreads){
-			wp = new WebPageImpl();
-			threadArray[i] = new Thread(wp);
-		}
+		String emals = "./emails.txt";
+		File file = new File(emals);
+		file.mkdirs();
+		WebPage wp = new WebPageImpl(getSeed());
+		Set<String> links = wp.getLinks();
+		Set<String> emails = wp.getEmails();
 	}	
-	//@Override
-	//public Set<String> getEMails(){
-	//}
+//	@Override
+//	public Set<String> getEMails(){
+//	}
 }
