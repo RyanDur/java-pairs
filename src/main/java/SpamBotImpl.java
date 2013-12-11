@@ -35,9 +35,10 @@ public class SpamBotImpl implements SpamBot{
 	public void scanSite(){
 		WebPage[] wpThreads = new WebPageImpl(numOfThreads);
 		Thread[] threadArray = new Thread(numOfThreads);
-		
+		int i = 0;
 		for(WebPage wp : wpThreads){
 			wp = new WebPageImpl();
+			threadArray[i] = new Thread(wp);
 		}
 	}	
 	//@Override
