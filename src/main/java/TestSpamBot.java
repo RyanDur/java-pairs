@@ -20,6 +20,7 @@ public class TestSpamBot{
 	public void afterTest(){
 		sbr = null;
 	}
+
 	 /**
      * Sets the seed.
      *
@@ -38,9 +39,6 @@ public class TestSpamBot{
 		} catch (MalformedURLException e) {
 				assertEquals(sbr.getSeed(), "not a URL");
 		}
-		
-		
-	}
 
     /**
      * Returns the seed URL. * @return the seed URL.
@@ -58,6 +56,7 @@ public class TestSpamBot{
      *
      * @param count the number of threads (i.e. crawlers) to start in parallel
      */
+
 	@Test
     public void testSetThreads(){
 		sbr.setThreads(numOfThreads);
@@ -81,10 +80,12 @@ public class TestSpamBot{
      * have stopped. If it is called before that point, its
      * behaviour is not defined.
      */
+
 	@Test
     public void testGetEMails(){
 		//Set<String>
 		//assertEquals(get and populate array with each line on .rtf);
 		assertEquals(1,2);
 	}
+
 }
