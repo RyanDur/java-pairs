@@ -1,5 +1,7 @@
 import java.util.*;
 import java.net.MalformedURLException;
+import java.io.*;
+
 
 public interface SpamBot {
 
@@ -33,7 +35,7 @@ public interface SpamBot {
     /**
      * Initiates the scanning process.
      */
-    void scanSite();
+    void scanSite() throws FileNotFoundException, IOException;
 
     /**
      * Returns all the emails gathered.
@@ -45,4 +47,5 @@ public interface SpamBot {
     //Set<String> getEMails();
 	//
 	int getNumOfThreads();
+	WebPage getWebPage();
 }

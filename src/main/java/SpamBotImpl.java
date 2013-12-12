@@ -10,6 +10,10 @@ public class SpamBotImpl implements SpamBot{
 	private int threads; // needs to be private = get a getter;
 	private int numOfThreads;
 	
+	public Set<String> getEmails(){
+		return this.emails;
+	}
+	
 	public int getNumOfThreads(){
 		return this.numOfThreads;
 	}
@@ -36,19 +40,33 @@ public class SpamBotImpl implements SpamBot{
 	}
 	
 	@Override
-	public void scanSite(){
-		String emals = "./emails.txt";
-		File file = new File(emals);
+	public void scanSite() throws FileNotFoundException, IOException{
+		String emailsPath = "."+File.separator + "emails.txt";
+		File file = new File(emailsPath);
 		try{
 			file.createNewFile();
 		} catch(IOException e){
 			System.out.println("File already exists or failed to create file");
 		}
 		
-		WebPage wp = new WebPageImpl(getSeed());
-		Set<String> links = wp.getLinks();
+		WebPage wp = getWebPage();
 		Set<String> emails = wp.getEmails();
-	}	
+		
+		FileWriter fw = new FileWriter(file.getAbsoluteFile());
+		BufferedWriter bw = new BufferedWriter(fw);
+
+		String[] emailArray = emails.toArray(new String[emails.size()]);
+		
+		for(int s = 0; s < emailArray.length; s++){
+			bw.write(emailArray[s]+"\n");
+		} 
+		bw.close();
+		
+	}
+
+	public WebPage getWebPage(){
+		return new WebPageImpl(getSeed());
+	}
 //	@Override
 //	public Set<String> getEMails(){
 //	}

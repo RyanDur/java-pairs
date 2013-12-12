@@ -1,9 +1,18 @@
 import static org.junit.Assert.*;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import java.io.*;
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.*;
 
+import static org.mockito.Mockito.*;
+
+import static org.hamcrest.CoreMatchers.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +23,7 @@ public class TestSpamBot{
 	int numOfThreads = 8;
 	@Before
 	public void beforeTest(){
-		sbr = new SpamBotImpl();
+		sbr = spy(new SpamBotImpl());
 		sbr.setSeed(urlStr);
 	}
 	 /**
@@ -64,16 +73,37 @@ public class TestSpamBot{
      * Initiates the scanning process.
      */
 	@Test
-    public void shouldBeAbleToScanASite(){
-		sbr.scanSite();
+    public void shouldBeAbleToScanASite() throws FileNotFoundException, IOException {	
 		String fileDir = "./emails.txt";
 		File emails = new File(fileDir);
 		assertTrue(emails.isFile());
-		//assert String set for emails works, 
-		//assert String set is being organized onto the text file
-		//assert the information is there propperly
-		//repeat for links
-		//do the threading(last) w/ self iteration (cant remember name);
+		
+		WebPage wp = mock(WebPage.class);
+		Set<String> testLinks = new HashSet<String>();
+		Set<String> testEmails = new HashSet<String>();
+		testEmails.add("foo");
+		testEmails.add("bar");
+		doReturn(wp).when(sbr).getWebPage();
+		when(wp.getLinks()).thenReturn(testLinks);
+		when(wp.getEmails()).thenReturn(testEmails);
+		
+		sbr.scanSite();
+		String[] emailArray = wp.getEmails().toArray(new String[testEmails.size()]);
+		
+	
+		assertEquals(emailArray, getFromFile(fileDir));
+	
+	}
+	
+	private String[] getFromFile(String fileDir) throws FileNotFoundException, IOException{
+		FileInputStream fin =  new FileInputStream(fileDir);
+		BufferedReader myInput = new BufferedReader(new InputStreamReader(fin));
+		ArrayList<String> sb = new ArrayList<String>();
+		String thisLine = null;
+ 		while ((thisLine = myInput.readLine()) != null) {  
+			sb.add(thisLine);
+		}
+		return sb.toArray(new String[sb.size()]);
 	}
 
     /**
@@ -88,7 +118,7 @@ public class TestSpamBot{
     public void testGetEMails(){
 		//Set<String>
 		//assertEquals(get and populate array with each line on .rtf);
-		assertEquals(1,2);
+//		assertEquals(1,2);
 	}
-
+//@cleanup destroy the file
 }

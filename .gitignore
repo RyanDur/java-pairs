@@ -12,3 +12,5 @@ build
 *.iws
 gradlew*
 settings.gradle
+emails.txt
+links.txt
