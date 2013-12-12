@@ -69,6 +69,11 @@ public class TestSpamBot{
 		String fileDir = "./emails.txt";
 		File emails = new File(fileDir);
 		assertTrue(emails.isFile());
+		//assert String set for emails works, 
+		//assert String set is being organized onto the text file
+		//assert the information is there propperly
+		//repeat for links
+		//do the threading(last) w/ self iteration (cant remember name);
 	}
 
     /**
