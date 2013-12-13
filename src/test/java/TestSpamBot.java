@@ -1,31 +1,21 @@
+import org.junit.*;
 import static org.junit.Assert.*;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import static org.mockito.Mockito.*;
+import static org.hamcrest.CoreMatchers.*;
 
 import java.io.*;
-import java.net.URL;
-import java.net.MalformedURLException;
+import java.net.*;
 import java.util.*;
 
-import static org.mockito.Mockito.*;
-
-import static org.hamcrest.CoreMatchers.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 public class TestSpamBot{
-    SpamBot sbr;
-    String urlStr ="http://www.google.com"; //"something that isnt a URL"
-    int numOfThreads = 8;
+    private SpamBot spamBot;
+    private String urlStr ="http://www.google.com"; //"something that isnt a URL"
+    private int numOfThreads = 8;
 
     @Before
     public void beforeTest(){
-        sbr = spy(new SpamBotImpl());
-        sbr.setSeed(urlStr);
+        spamBot = spy(new SpamBotImpl());
+        spamBot.setSeed(urlStr);
     }
 
     /**
@@ -40,7 +30,7 @@ public class TestSpamBot{
      */
     @Test
     public void testSetSeed() throws MalformedURLException {
-        assertThat(sbr.getSeed(), is(equalTo(urlStr)));
+        assertThat(spamBot.getSeed(), is(equalTo(urlStr)));
     }
 
     /**
@@ -53,8 +43,8 @@ public class TestSpamBot{
      */
     @Test
     public void testSetThreads(){
-        sbr.setThreads(numOfThreads);
-        assertEquals(sbr.getNumOfThreads(), numOfThreads);
+        spamBot.setThreads(numOfThreads);
+        assertEquals(spamBot.getNumOfThreads(), numOfThreads);
     }
 
     /**
@@ -63,22 +53,22 @@ public class TestSpamBot{
     @Test
     public void shouldBeAbleToScanASite() throws FileNotFoundException, IOException {
         String fileDir = "./emails.txt";
-        File emails = new File(fileDir);
-        assertTrue(emails.isFile());
-
-        WebPage wp = mock(WebPage.class);
         Set<String> testLinks = new HashSet<String>();
         Set<String> testEmails = new HashSet<String>();
         testEmails.add("foo");
         testEmails.add("bar");
-        doReturn(wp).when(sbr).getWebPage();
-        when(wp.getLinks()).thenReturn(testLinks);
-        when(wp.getEmails()).thenReturn(testEmails);
 
-        sbr.scanSite();
-        String[] emailArray = wp.getEmails().toArray(new String[testEmails.size()]);
+        String[] emailArray = testEmails.toArray(new String[testEmails.size()]);
 
+        WebPage mockWebPage = mock(WebPage.class);
+        doReturn(mockWebPage).when(spamBot).getWebPage();
+        when(mockWebPage.getLinks()).thenReturn(testLinks);
+        when(mockWebPage.getEmails()).thenReturn(testEmails);
+
+        spamBot.scanSite();
+        File emails = getFile(fileDir);
         assertEquals(emailArray, getFromFile(fileDir));
+        removeFile(emails);
     }
 
     /**
@@ -94,7 +84,17 @@ public class TestSpamBot{
         //assertEquals(get and populate array with each line on .rtf);
         //              assertEquals(1,2);
     }
-    //@cleanup destroy the file
+
+    private File getFile(String filePath) {
+        File file = new File(filePath);
+        assertTrue(file.isFile());
+        return file;
+    }
+
+    private void removeFile(File file) {
+        file.delete();
+        assertFalse(file.isFile());
+    }
 
     private String[] getFromFile(String fileDir) throws FileNotFoundException, IOException{
         FileInputStream fin =  new FileInputStream(fileDir);
