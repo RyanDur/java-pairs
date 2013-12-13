@@ -35,7 +35,7 @@ dependencies {
 test {
   testLogging {
     // Show that tests are run in the command-line output
-    events 'passed'
+    events "skipped", "passed"
     exceptionFormat "short"
     // set options for log level DEBUG
     debug {
