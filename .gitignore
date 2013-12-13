@@ -4,6 +4,7 @@ hanoi.org
 *.idea
 *.iml
 *gradle
+!build.gradle
 gen
 out
 build

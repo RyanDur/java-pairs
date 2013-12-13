@@ -40,7 +40,7 @@ public class TestSpamBot{
      */
     @Test
     public void testSetSeed() throws MalformedURLException {
-        assertEquals(sbr.getSeed(), urlStr);
+        assertThat(sbr.getSeed(), is(equalTo(urlStr)));
     }
 
     /**
